@@ -2,27 +2,38 @@ package de.tum.cit.ase.maze;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 public class MapLoader {
 
-    public void loadMap(Stage stage) {
-        Properties properties = new Properties();
-        FileHandle fileHandle = Gdx.files.internal("levels/level-1.properties");
+    private final MazeRunnerGame game;
 
+    public MapLoader(MazeRunnerGame game) {
+        this.game = game;
+    }
+
+    public List<GameObject> loadMap(int level) {
+        Properties properties = new Properties();
+        FileHandle fileHandle = Gdx.files.internal(
+            String.format("levels/level-%d.properties", level)
+        );
+
+        List<GameObject> res = new LinkedList<>();
         try {
             properties.load(fileHandle.reader());
-            processProperties(properties, stage);
+            processProperties(properties, res);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return res;
     }
 
-    private void processProperties(Properties properties, Stage stage) {
+    private void processProperties(Properties properties,
+                                   List<GameObject> gameObjects) {
         for(Object key : properties.keySet()) {
             String[] coordinates = ((String) key).split(",");
             int x = Integer.parseInt(coordinates[0]);
@@ -30,10 +41,11 @@ public class MapLoader {
             int textureType = Integer.parseInt(
                 properties.getProperty((String)key)
             );
-
-            Actor actor = new BlockFactory().create(x * 16f, y * 16f, BlockType.of(textureType));
-            stage.addActor(actor);
+            if(textureType == 1) {
+                gameObjects.add(
+                    new Wall(game, x * 64, y * 64, 64, 64)
+                );
+            }
         }
     }
-
 }

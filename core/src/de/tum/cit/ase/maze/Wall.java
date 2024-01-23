@@ -2,27 +2,26 @@ package de.tum.cit.ase.maze;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Wall extends Actor {
+public class Wall extends GameObject {
+    private Sprite sprite;
 
-    private final Sprite sprite;
+    public Wall(MazeRunnerGame game, float x, float y, float width, float height) {
+        super(game, x, y, width, height);
+        loadSprite();
+    }
 
-    public Wall(float x, float y) {
-        this.sprite = new Sprite(
-            new Texture(Gdx.files.internal("wall.png"))
+    private void loadSprite() {
+        sprite = new Sprite(
+            new Texture(Gdx.files.internal("test.png"))
         );
         sprite.setPosition(x, y);
-        setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
-        setTouchable(Touchable.enabled);
-        System.out.println("Texture sizes: " + sprite.getTexture().getWidth() + " " + sprite.getTexture().getHeight());
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
-        sprite.draw(batch);
+    public void render(SpriteBatch batch, float delta) {
+        batch.draw(sprite.getTexture(), x, y);
     }
 }

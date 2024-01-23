@@ -3,6 +3,7 @@ package de.tum.cit.ase.maze;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import games.spooky.gdx.nativefilechooser.desktop.DesktopFileChooser;
 
 /**
  * The DesktopLauncher class is the entry point for the desktop version of the Maze Runner game.
@@ -30,6 +31,6 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60); // Set the foreground frames per second
 
 		// Launch the game
-		new Lwjgl3Application(new MazeGame(), config);
+		new Lwjgl3Application(new MazeRunnerGame(new DesktopFileChooser()), config);
 	}
 }

@@ -2,6 +2,7 @@ package de.tum.cit.ase.maze;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -100,7 +101,13 @@ public class Player extends GameObject {
             damageTime += delta;
 
             if(damaged) {
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("hit.mp3"));
+                sound.play(1.f);
                 health--;
+
+                if(isDeath()) {
+                    Gdx.audio.newSound(Gdx.files.internal("die.mp3")).play();
+                }
             }
             System.out.println("Collided with trap. Current health: " + health);
         } else {
@@ -110,10 +117,13 @@ public class Player extends GameObject {
         if(collidesWithKey()) {
             ++keysAmount;
             game.getGameObjects().stream().filter(o -> o instanceof Key).forEach(GameObject::remove);
+            Sound sound = Gdx.audio.newSound(Gdx.files.internal("coin.wav"));
+            sound.play(1.f);
         }
 
         if(collidesWithExit() && hasKey()) {
             game.showVictory();
+            Gdx.audio.newSound(Gdx.files.internal("victory.mp3")).play();
         }
     }
 
@@ -132,6 +142,7 @@ public class Player extends GameObject {
     private boolean collidesWithKey() {
         return game.getGameObjects().stream()
             .filter(obj -> obj instanceof Key)
+            .filter(obj -> obj.visible)
             .anyMatch(this::collidesWith);
     }
 

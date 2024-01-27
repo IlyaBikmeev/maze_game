@@ -3,6 +3,7 @@ package de.tum.cit.ase.maze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -70,6 +71,8 @@ public class GameScreen implements Screen {
     private void checkEnd() {
         if(game.getPlayer().isDeath()) {
             game.showGameOver();
+            Sound deathSound = Gdx.audio.newSound(Gdx.files.internal("death.wav"));
+            deathSound.play();
         }
     }
 

@@ -3,6 +3,7 @@ package de.tum.cit.ase.maze;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
@@ -29,6 +30,8 @@ public class MazeRunnerGame extends Game {
 
     private List<GameObject> gameObjects;
 
+    private boolean mapLoaded;
+
     private MapLoader mapLoader = new MapLoader(this);
 
     /**
@@ -47,16 +50,6 @@ public class MazeRunnerGame extends Game {
     public void create() {
         spriteBatch = new SpriteBatch(); // Create SpriteBatch
         skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
-        player = new Player(this, 0f, 0f);
-        gameObjects = new LinkedList<>();
-        gameObjects.addAll(mapLoader.loadMap(100));
-
-        GameObject entryPoint = gameObjects.stream()
-            .filter(obj -> obj instanceof EntryPoint)
-            .findAny().orElseThrow(() -> new RuntimeException("There's no entry point in the map"));
-
-        player.setPosition(entryPoint.getX(), entryPoint.getY());
-
         // Play some background music
         // Background sound
         Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("background.mp3"));
@@ -64,6 +57,26 @@ public class MazeRunnerGame extends Game {
         //backgroundMusic.play();
 
         goToMenu(); // Navigate to the menu screen
+    }
+
+    public void loadMap(FileHandle mapFile) {
+        player = new Player(this, 0f, 0f);
+        gameObjects = new LinkedList<>();
+        gameObjects.addAll(mapLoader.fromFile(mapFile));
+
+        GameObject entryPoint = gameObjects.stream()
+            .filter(obj -> obj instanceof EntryPoint)
+            .findAny().orElseThrow(() -> new RuntimeException("There's no entry point in the map"));
+
+        player.setPosition(entryPoint.getX(), entryPoint.getY());
+
+        mapLoaded = true;
+    }
+
+    private void clear() {
+        gameObjects = null;
+        mapLoaded = false;
+        player = null;
     }
 
     /**
@@ -81,6 +94,10 @@ public class MazeRunnerGame extends Game {
      * Switches to the game screen.
      */
     public void goToGame() {
+        if(!mapLoaded) {
+            return;
+        }
+
         this.setScreen(new GameScreen(this)); // Set the current screen to GameScreen
         if (menuScreen != null) {
             menuScreen.dispose(); // Dispose the menu screen if it exists

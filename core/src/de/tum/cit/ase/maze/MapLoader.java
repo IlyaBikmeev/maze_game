@@ -11,20 +11,26 @@ import java.util.Properties;
 public class MapLoader {
 
     private final MazeRunnerGame game;
+    private final int[][] map = new int[72][40];
+
+    private static final int MAX_WIDTH = 72;
+    private static final int MAX_HEIGHT = 40;
 
     public MapLoader(MazeRunnerGame game) {
         this.game = game;
+        for (int i = 0; i < MAX_WIDTH; i++) {
+            for(int j = 0; j < MAX_HEIGHT; ++j) {
+                map[i][j] = -1;
+            }
+        }
     }
 
-    public List<GameObject> loadMap(int level) {
+    public List<GameObject> fromFile(FileHandle file) {
         Properties properties = new Properties();
-        FileHandle fileHandle = Gdx.files.internal(
-            String.format("levels/level-%d.properties", level)
-        );
 
         List<GameObject> res = new LinkedList<>();
         try {
-            properties.load(fileHandle.reader());
+            properties.load(file.reader());
             processProperties(properties, res);
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,7 +47,16 @@ public class MapLoader {
             int type = Integer.parseInt(
                 properties.getProperty((String)key)
             );
+            map[x][y] = type;
             gameObjects.add(GameObject.of(game, x, y, type));
+        }
+
+        for(int x = 0; x < MAX_WIDTH; ++x) {
+            for(int y = 0; y < MAX_HEIGHT; ++y) {
+                if(map[x][y] == -1) {
+                    gameObjects.add(GameObject.of(game, x, y, -1));
+                }
+            }
         }
     }
 }

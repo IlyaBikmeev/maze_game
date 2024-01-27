@@ -17,8 +17,8 @@ public class GameScreen implements Screen {
     public final OrthographicCamera camera;
     private final BitmapFont font;
 
-    private float dx = 0;
-    private float dy = 0;
+    private float translatedX = 0;
+    private float translatedY = 0;
 
     private final float screenWidth = 18 * 64;
     private final float screenHeight = 10 * 64;
@@ -49,8 +49,8 @@ public class GameScreen implements Screen {
     }
 
     private void renderObjects(float delta) {
-        game.getPlayer().render(game.getSpriteBatch(), delta);
         game.getGameObjects().forEach(obj -> obj.render(game.getSpriteBatch(), delta));
+        game.getPlayer().render(game.getSpriteBatch(), delta);
     }
 
     private void beforeActions() {
@@ -65,7 +65,6 @@ public class GameScreen implements Screen {
         camera.update(); // Update the camera
 
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
-
     }
 
     private void checkEnd() {
@@ -81,23 +80,23 @@ public class GameScreen implements Screen {
     }
 
     private void translateCamera() {
-        if(game.getPlayer().x - dx < 0) {
-            dx -= screenWidth / 2;
+        if(game.getPlayer().x - translatedX < screenWidth * 0.1f) {
+            translatedX -= screenWidth / 2;
             camera.translate(-screenWidth / 2, 0);
         }
 
-        if(game.getPlayer().x - dx > screenWidth - game.getPlayer().width) {
-            dx += screenWidth / 2;
+        if(game.getPlayer().x - translatedX > 0.9 * (screenWidth - game.getPlayer().width)) {
+            translatedX += screenWidth / 2;
             camera.translate(screenWidth / 2, 0);
         }
 
-        if(game.getPlayer().y - dy < 0) {
-            dy -= screenHeight / 2;
+        if(game.getPlayer().y - translatedY < screenHeight * 0.1f) {
+            translatedY -= screenHeight / 2;
             camera.translate(0, -screenHeight / 2);
         }
 
-        if(game.getPlayer().y - dy + game.getPlayer().height > screenHeight) {
-            dy += screenHeight / 2;
+        if(game.getPlayer().y - translatedY + game.getPlayer().height > 0.9 * screenHeight) {
+            translatedY += screenHeight / 2;
             camera.translate(0, screenHeight / 2);
         }
     }

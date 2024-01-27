@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserCallback;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserConfiguration;
+import games.spooky.gdx.nativefilechooser.NativeFileChooserIntent;
+import games.spooky.gdx.nativefilechooser.desktop.DesktopFileChooser;
 
 /**
  * The MenuScreen class is responsible for displaying the main menu of the game.
@@ -24,7 +26,7 @@ import games.spooky.gdx.nativefilechooser.NativeFileChooserConfiguration;
 public class MenuScreen implements Screen {
 
     private final Stage stage;
-
+    private final DesktopFileChooser chooser = new DesktopFileChooser();
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
      *
@@ -54,8 +56,37 @@ public class MenuScreen implements Screen {
             }
         });
 
+        NativeFileChooserConfiguration conf = new NativeFileChooserConfiguration();
+        conf.title = "Choose file";
+        conf.intent = NativeFileChooserIntent.OPEN;
+        conf.directory = Gdx.files.internal("");
+
         //Create and add a button to load a new map
         TextButton loadMapButton = new TextButton("Load Map", game.getSkin());
+        loadMapButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("LoadMap Button");
+                chooser.chooseFile(conf, new NativeFileChooserCallback() {
+                    @Override
+                    public void onFileChosen(FileHandle file) {
+                        System.out.println("file chosen");
+                        game.loadMap(file);
+                    }
+
+                    @Override
+                    public void onCancellation() {
+                        System.out.println("Cancelled");
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                        System.out.println("Error: " + exception.getMessage());
+                    }
+                });
+            }
+        });
+
         table.add(loadMapButton).width(300).row();
 
         //Create and add a button to exit game

@@ -1,7 +1,5 @@
 package de.tum.cit.ase.maze;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -65,6 +63,7 @@ public abstract class GameObject {
 
     public static GameObject of(MazeRunnerGame game, float x, float y, int type) {
         switch (type) {
+            case -1: return new Path(game, x * 64, y * 64);
             case 0: return new Wall(game, x * 64, y * 64);
             case 1: return new EntryPoint(game, x * 64, y * 64);
             case 2: return new Exit(game, x * 64, y * 64);

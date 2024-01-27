@@ -82,6 +82,7 @@ public class MenuScreen implements Screen {
                     @Override
                     public void onError(Exception exception) {
                         System.out.println("Error: " + exception.getMessage());
+                        exception.printStackTrace();
                     }
                 });
             }

@@ -60,8 +60,8 @@ public class MazeRunnerGame extends Game {
         backgroundMusic.setVolume(0.5f);
 
         gameMusic = Gdx.audio.newMusic(Gdx.files.internal("game_music.mp3"));
-        backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(0.5f);
+        gameMusic.setLooping(true);
+        gameMusic.setVolume(0.5f);
 
         goToMenu(); // Navigate to the menu screen
     }

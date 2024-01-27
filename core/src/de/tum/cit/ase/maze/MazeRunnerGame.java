@@ -30,6 +30,9 @@ public class MazeRunnerGame extends Game {
 
     private List<GameObject> gameObjects;
 
+    private Music backgroundMusic;
+    private Music gameMusic;
+
     private boolean mapLoaded;
 
     private MapLoader mapLoader = new MapLoader(this);
@@ -52,9 +55,13 @@ public class MazeRunnerGame extends Game {
         skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
         // Play some background music
         // Background sound
-        Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("background.mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("background.mp3"));
         backgroundMusic.setLooping(true);
-        //backgroundMusic.play();
+        backgroundMusic.setVolume(0.5f);
+
+        gameMusic = Gdx.audio.newMusic(Gdx.files.internal("game_music.mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.5f);
 
         goToMenu(); // Navigate to the menu screen
     }
@@ -83,6 +90,7 @@ public class MazeRunnerGame extends Game {
      * Switches to the menu screen.
      */
     public void goToMenu() {
+        backgroundMusic.play();
         this.setScreen(new MenuScreen(this)); // Set the current screen to MenuScreen
         if (gameScreen != null) {
             gameScreen.dispose(); // Dispose the game screen if it exists
@@ -94,6 +102,9 @@ public class MazeRunnerGame extends Game {
      * Switches to the game screen.
      */
     public void goToGame() {
+        backgroundMusic.stop();
+        gameMusic.play();
+
         if(!mapLoaded) {
             return;
         }
@@ -106,10 +117,12 @@ public class MazeRunnerGame extends Game {
     }
 
     public void showVictory() {
+        gameMusic.stop();
         this.setScreen(new VictoryScreen(this));
     }
 
     public void showGameOver() {
+        gameMusic.stop();
         this.setScreen(new GameOverScreen(this));
     }
 

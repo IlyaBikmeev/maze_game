@@ -22,10 +22,6 @@ public abstract class GameObject {
         this.game = game;
     }
 
-    protected void setBounds(float x, float y, float width, float height) {
-        bounds = new Rectangle(x - width / 2, y - height / 2, width, height);
-    }
-
     public boolean collidesWith(GameObject other) {
         return bounds.overlaps(other.bounds);
     }
@@ -34,6 +30,10 @@ public abstract class GameObject {
         this.x = x;
         this.y = y;
         this.setBounds(x, y, width, height);
+    }
+
+    protected void setBounds(float x, float y, float width, float height) {
+        bounds = new Rectangle(x, y, width, height);
     }
 
     public float getX() {

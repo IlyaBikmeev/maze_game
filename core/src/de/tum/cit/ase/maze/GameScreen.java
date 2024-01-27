@@ -14,9 +14,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class GameScreen implements Screen {
 
     private final MazeRunnerGame game;
-    private final OrthographicCamera camera;
+    public final OrthographicCamera camera;
     private final BitmapFont font;
 
+    private float dx = 0;
+    private float dy = 0;
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
@@ -51,6 +53,7 @@ public class GameScreen implements Screen {
 
     private void beforeActions() {
         handleInput();
+        translateCamera();
         ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
         camera.update(); // Update the camera
@@ -66,6 +69,31 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.goToMenu();
         }
+    }
+
+    private void translateCamera() {
+//        if(game.getPlayer().x - dx < 0) {
+//            dx -= camera.viewportWidth / 2;
+//            camera.translate(-camera.viewportWidth / 2, 0);
+//        }
+        //TODO
+
+        System.out.println(game.getPlayer().x + " vs " + camera.viewportWidth);
+        System.out.printf("");
+//        if(game.getPlayer().x - dx > camera.viewportWidth - game.getPlayer().width) {
+//            dx += camera.viewportWidth / 2;
+//            camera.translate(camera.viewportWidth / 2, 0);
+//        }
+//
+//        if(game.getPlayer().y - dy < 0) {
+//            dy -= camera.viewportHeight / 2;
+//            camera.translate(0, -camera.viewportHeight / 2);
+//        }
+//
+//        if(game.getPlayer().y - dy + game.getPlayer().height > camera.viewportHeight) {
+//            dy += camera.viewportHeight / 2;
+//            camera.translate(0, camera.viewportHeight / 2);
+//        }
     }
 
     private void postActions() {

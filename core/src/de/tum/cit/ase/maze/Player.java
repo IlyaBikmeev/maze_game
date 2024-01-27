@@ -3,10 +3,12 @@ package de.tum.cit.ase.maze;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class Player extends GameObject {
 
     public Player(MazeRunnerGame game,
                   float x, float y) {
-        super(game, x, y, 16, 32);
+        super(game, x, y, 64, 128);
         this.animations = new ArrayList<>();
         this.loadAnimation();
     }
@@ -82,7 +84,6 @@ public class Player extends GameObject {
 
         setPosition(x + deltaX, y + deltaY);
         if(collides()) {
-            System.out.println("Collides");
             setPosition(x - deltaX, y - deltaY);
         }
     }

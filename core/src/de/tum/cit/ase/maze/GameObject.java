@@ -68,7 +68,7 @@ public abstract class GameObject {
             case 1: return new EntryPoint(game, x * 64, y * 64);
             case 2: return new Exit(game, x * 64, y * 64);
             case 3: return new Trap(game, x * 64, y * 64);
-            case 4: return GameObject.of(game, x, y, -1);
+            case 4: return new Ghost(game, x * 64, y * 64);
             case 5: return new Key(game, x * 64, y * 64);
         }
 

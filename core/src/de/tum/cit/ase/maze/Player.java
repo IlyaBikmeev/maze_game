@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends GameObject {
-    private List<Animation<TextureRegion>> animations;  //array for animations for each direction
-    private float speed = 200f;
-    private float animationTime;
-    private float damageTime;
-    private int direction = 0;
+    protected List<Animation<TextureRegion>> animations;  //array for animations for each direction
+    protected float speed = 200f;
+    protected float animationTime;
+    protected float damageTime;
+    protected int direction = 0;
 
-    private int health = 3;
-    private int keysAmount = 0;
+    protected int health = 3;
+    protected int keysAmount = 0;
 
     public Player(MazeRunnerGame game,
                   float x, float y) {
@@ -29,7 +29,7 @@ public class Player extends GameObject {
         this.loadAnimation();
     }
 
-    private void loadAnimation() {
+    protected void loadAnimation() {
         Texture walkSheet = new Texture(Gdx.files.internal("character.png"));
 
         int frameWidth = 16;
@@ -71,7 +71,7 @@ public class Player extends GameObject {
         return health;
     }
 
-    private void handleInput(float delta) {
+    protected void handleInput(float delta) {
         float deltaX = 0f;
         float deltaY = 0f;
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -131,32 +131,32 @@ public class Player extends GameObject {
         }
     }
 
-    private boolean collidesWithWall() {
+    protected boolean collidesWithWall() {
         return game.getGameObjects().stream()
             .filter(obj -> obj instanceof Solid)
             .anyMatch(this::collidesWith);
     }
 
-    private boolean collidesWithTrap() {
+    protected boolean collidesWithTrap() {
         return game.getGameObjects().stream()
-            .filter(obj -> obj instanceof Trap)
+            .filter(obj -> obj instanceof Trap || obj instanceof Ghost)
             .anyMatch(this::collidesWith);
     }
 
-    private boolean collidesWithKey() {
+    protected boolean collidesWithKey() {
         return game.getGameObjects().stream()
             .filter(obj -> obj instanceof Key)
             .filter(obj -> obj.visible)
             .anyMatch(this::collidesWith);
     }
 
-    private boolean collidesWithExit() {
+    protected boolean collidesWithExit() {
         return game.getGameObjects().stream()
             .filter(obj -> obj instanceof Exit)
             .anyMatch(this::collidesWith);
     }
 
-    private void drawAnimation(SpriteBatch batch) {
+    protected void drawAnimation(SpriteBatch batch) {
         batch.draw(
             animations.get(direction).getKeyFrame(animationTime, true),
             x,

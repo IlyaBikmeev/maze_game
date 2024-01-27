@@ -72,12 +72,12 @@ public class MazeRunnerGame extends Game {
         gameObjects = new LinkedList<>();
         gameObjects.addAll(mapLoader.fromFile(mapFile));
 
+
         GameObject entryPoint = gameObjects.stream()
             .filter(obj -> obj instanceof EntryPoint)
             .findAny().orElseThrow(() -> new RuntimeException("There's no entry point in the map"));
 
         player.setPosition(entryPoint.getX(), entryPoint.getY());
-
         mapLoaded = true;
     }
 

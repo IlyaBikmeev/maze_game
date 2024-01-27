@@ -18,6 +18,9 @@ public class MapLoader {
 
     public MapLoader(MazeRunnerGame game) {
         this.game = game;
+    }
+
+    private void clear() {
         for (int i = 0; i < MAX_WIDTH; i++) {
             for(int j = 0; j < MAX_HEIGHT; ++j) {
                 map[i][j] = -1;
@@ -26,6 +29,7 @@ public class MapLoader {
     }
 
     public List<GameObject> fromFile(FileHandle file) {
+        clear();
         Properties properties = new Properties();
 
         List<GameObject> res = new LinkedList<>();

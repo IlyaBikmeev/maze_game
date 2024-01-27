@@ -67,6 +67,10 @@ public class Player extends GameObject {
         return keysAmount > 0;
     }
 
+    public int getHealth() {
+        return health;
+    }
+
     private void handleInput(float delta) {
         float deltaX = 0f;
         float deltaY = 0f;

@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 /**
@@ -36,7 +38,6 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false);
         camera.zoom = 0.75f;
-
         // Get the font from the game's skin
         font = game.getSkin().getFont("font");
     }
@@ -108,8 +109,25 @@ public class GameScreen implements Screen {
     }
 
     private void postActions() {
+        drawHud();
         game.getSpriteBatch().end(); // Important to call this after drawing everything
     }
+
+    private void drawHud() {
+        BitmapFont font = new FreeTypeFontGenerator(
+            Gdx.files.internal("OpenSans.ttf")
+        ).generateFont(new FreeTypeFontGenerator.FreeTypeFontParameter());
+
+        font.setColor(Color.CYAN);
+        CharSequence healthState = "Health: " + game.getPlayer().getHealth();
+        CharSequence keyStatus = "Key found: " + game.getPlayer().hasKey();
+
+        font.draw(game.getSpriteBatch(), healthState, 0.85f * screenWidth + translatedX,
+            0.95f * screenHeight + translatedY);
+        font.draw(game.getSpriteBatch(), keyStatus, 0.85f * screenWidth + translatedX,
+            0.95f * screenHeight + translatedY - font.getLineHeight());
+    }
+
 
     @Override
     public void resize(int width, int height) {

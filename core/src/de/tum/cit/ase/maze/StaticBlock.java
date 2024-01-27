@@ -9,7 +9,7 @@ public abstract class StaticBlock extends GameObject {
     protected static Texture objectsSheet =
         new Texture(Gdx.files.internal("basictiles.png"));
 
-    private TextureRegion texture;
+    protected TextureRegion texture;
     private int blockWidth;
     private int blockHeight;
 
@@ -27,8 +27,6 @@ public abstract class StaticBlock extends GameObject {
 
     @Override
     public void render(SpriteBatch batch, float delta) {
-        if(visible) {
-            batch.draw(texture, x, y, width, height);
-        }
+        batch.draw(texture, x, y, width, height);
     }
 }

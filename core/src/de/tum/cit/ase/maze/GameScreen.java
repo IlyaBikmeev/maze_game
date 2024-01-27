@@ -50,7 +50,10 @@ public class GameScreen implements Screen {
     }
 
     private void renderObjects(float delta) {
-        game.getGameObjects().forEach(obj -> obj.render(game.getSpriteBatch(), delta));
+        game.getGameObjects().
+            stream()
+            .filter(obj -> obj.visible)
+            .forEach(obj -> obj.render(game.getSpriteBatch(), delta));
         game.getPlayer().render(game.getSpriteBatch(), delta);
     }
 

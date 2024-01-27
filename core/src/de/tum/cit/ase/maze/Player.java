@@ -1,14 +1,11 @@
 package de.tum.cit.ase.maze;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
@@ -18,11 +15,15 @@ public class Player extends GameObject {
     private List<Animation<TextureRegion>> animations;  //array for animations for each direction
     private float speed = 200f;
     private float animationTime;
+    private float damageTime;
     private int direction = 0;
+
+    private int health = 3;
+    private int keysAmount = 0;
 
     public Player(MazeRunnerGame game,
                   float x, float y) {
-        super(game, x, y, 64, 128);
+        super(game, x, y, 64.0f / 1.7f, 55f);
         this.animations = new ArrayList<>();
         this.loadAnimation();
     }
@@ -57,6 +58,13 @@ public class Player extends GameObject {
         drawAnimation(batch);
     }
 
+    public boolean isDeath() {
+        return health <= 0;
+    }
+
+    public boolean hasKey() {
+        return keysAmount > 0;
+    }
 
     private void handleInput(float delta) {
         float deltaX = 0f;
@@ -83,13 +91,53 @@ public class Player extends GameObject {
         }
 
         setPosition(x + deltaX, y + deltaY);
-        if(collides()) {
+        if(collidesWithWall()) {
             setPosition(x - deltaX, y - deltaY);
+        }
+
+        if(collidesWithTrap()) {
+            boolean damaged = damageTime == 0 || damageTime > 1;
+            damageTime += delta;
+
+            if(damaged) {
+                health--;
+            }
+            System.out.println("Collided with trap. Current health: " + health);
+        } else {
+            damageTime = 0;
+        }
+
+        if(collidesWithKey()) {
+            ++keysAmount;
+            game.getGameObjects().stream().filter(o -> o instanceof Key).forEach(GameObject::remove);
+        }
+
+        if(collidesWithExit() && hasKey()) {
+            game.showVictory();
         }
     }
 
-    private boolean collides() {
+    private boolean collidesWithWall() {
         return game.getGameObjects().stream()
+            .filter(obj -> obj instanceof Solid)
+            .anyMatch(this::collidesWith);
+    }
+
+    private boolean collidesWithTrap() {
+        return game.getGameObjects().stream()
+            .filter(obj -> obj instanceof Trap)
+            .anyMatch(this::collidesWith);
+    }
+
+    private boolean collidesWithKey() {
+        return game.getGameObjects().stream()
+            .filter(obj -> obj instanceof Key)
+            .anyMatch(this::collidesWith);
+    }
+
+    private boolean collidesWithExit() {
+        return game.getGameObjects().stream()
+            .filter(obj -> obj instanceof Exit)
             .anyMatch(this::collidesWith);
     }
 
@@ -98,8 +146,8 @@ public class Player extends GameObject {
             animations.get(direction).getKeyFrame(animationTime, true),
             x,
             y,
-            64,
-            128
+            width,
+            height
         );
     }
 }

@@ -1,5 +1,7 @@
 package de.tum.cit.ase.maze;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -12,12 +14,15 @@ public abstract class GameObject {
     protected float width;
     protected float height;
 
+    protected boolean visible;
+
     protected Rectangle bounds;
 
     public GameObject(MazeRunnerGame game,
                       float x, float y, float width, float height) {
         this.width = width;
         this.height = height;
+        this.visible = true;
         setPosition(x, y);
         this.game = game;
     }
@@ -52,5 +57,22 @@ public abstract class GameObject {
         this.y = y;
     }
 
+    public void remove() {
+        this.visible = false;
+    }
+
     public abstract void render(SpriteBatch batch, float delta);
+
+    public static GameObject of(MazeRunnerGame game, float x, float y, int type) {
+        switch (type) {
+            case 0: return new Wall(game, x * 64, y * 64);
+            case 1: return new EntryPoint(game, x * 64, y * 64);
+            case 2: return new Exit(game, x * 64, y * 64);
+            case 3: return new Trap(game, x * 64, y * 64);
+
+            case 5: return new Key(game, x * 64, y * 64);
+        }
+
+        throw new IllegalArgumentException();
+    }
 }

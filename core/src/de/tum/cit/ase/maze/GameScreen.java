@@ -20,6 +20,9 @@ public class GameScreen implements Screen {
     private float dx = 0;
     private float dy = 0;
 
+    private final float screenWidth = 18 * 64;
+    private final float screenHeight = 10 * 64;
+
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
@@ -35,7 +38,6 @@ public class GameScreen implements Screen {
 
         // Get the font from the game's skin
         font = game.getSkin().getFont("font");
-
     }
 
     // Screen interface methods with necessary functionality
@@ -52,17 +54,24 @@ public class GameScreen implements Screen {
     }
 
     private void beforeActions() {
+        checkEnd();
         handleInput();
         translateCamera();
         ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
-        camera.update(); // Update the camera
 
         // Set up and begin drawing with the sprite batch
         game.getSpriteBatch().setProjectionMatrix(camera.combined);
+        camera.update(); // Update the camera
 
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
 
+    }
+
+    private void checkEnd() {
+        if(game.getPlayer().isDeath()) {
+            game.showGameOver();
+        }
     }
 
     private void handleInput() {
@@ -72,28 +81,25 @@ public class GameScreen implements Screen {
     }
 
     private void translateCamera() {
-//        if(game.getPlayer().x - dx < 0) {
-//            dx -= camera.viewportWidth / 2;
-//            camera.translate(-camera.viewportWidth / 2, 0);
-//        }
-        //TODO
+        if(game.getPlayer().x - dx < 0) {
+            dx -= screenWidth / 2;
+            camera.translate(-screenWidth / 2, 0);
+        }
 
-        System.out.println(game.getPlayer().x + " vs " + camera.viewportWidth);
-        System.out.printf("");
-//        if(game.getPlayer().x - dx > camera.viewportWidth - game.getPlayer().width) {
-//            dx += camera.viewportWidth / 2;
-//            camera.translate(camera.viewportWidth / 2, 0);
-//        }
-//
-//        if(game.getPlayer().y - dy < 0) {
-//            dy -= camera.viewportHeight / 2;
-//            camera.translate(0, -camera.viewportHeight / 2);
-//        }
-//
-//        if(game.getPlayer().y - dy + game.getPlayer().height > camera.viewportHeight) {
-//            dy += camera.viewportHeight / 2;
-//            camera.translate(0, camera.viewportHeight / 2);
-//        }
+        if(game.getPlayer().x - dx > screenWidth - game.getPlayer().width) {
+            dx += screenWidth / 2;
+            camera.translate(screenWidth / 2, 0);
+        }
+
+        if(game.getPlayer().y - dy < 0) {
+            dy -= screenHeight / 2;
+            camera.translate(0, -screenHeight / 2);
+        }
+
+        if(game.getPlayer().y - dy + game.getPlayer().height > screenHeight) {
+            dy += screenHeight / 2;
+            camera.translate(0, screenHeight / 2);
+        }
     }
 
     private void postActions() {
@@ -125,6 +131,4 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
     }
-
-    // Additional methods and logic can be added as needed for the game screen
 }

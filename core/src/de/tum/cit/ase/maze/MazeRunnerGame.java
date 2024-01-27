@@ -47,9 +47,15 @@ public class MazeRunnerGame extends Game {
     public void create() {
         spriteBatch = new SpriteBatch(); // Create SpriteBatch
         skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
-        player = new Player(this,100.f, 100.f);
+        player = new Player(this, 0f, 0f);
         gameObjects = new LinkedList<>();
-        gameObjects.addAll(mapLoader.loadMap(1));
+        gameObjects.addAll(mapLoader.loadMap(100));
+
+        GameObject entryPoint = gameObjects.stream()
+            .filter(obj -> obj instanceof EntryPoint)
+            .findAny().orElseThrow(() -> new RuntimeException("There's no entry point in the map"));
+
+        player.setPosition(entryPoint.getX(), entryPoint.getY());
 
         // Play some background music
         // Background sound
@@ -80,6 +86,14 @@ public class MazeRunnerGame extends Game {
             menuScreen.dispose(); // Dispose the menu screen if it exists
             menuScreen = null;
         }
+    }
+
+    public void showVictory() {
+        this.setScreen(new VictoryScreen(this));
+    }
+
+    public void showGameOver() {
+        this.setScreen(new GameOverScreen(this));
     }
 
     /**

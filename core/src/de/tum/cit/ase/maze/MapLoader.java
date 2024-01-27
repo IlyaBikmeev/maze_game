@@ -38,14 +38,10 @@ public class MapLoader {
             String[] coordinates = ((String) key).split(",");
             int x = Integer.parseInt(coordinates[0]);
             int y = Integer.parseInt(coordinates[1]);
-            int textureType = Integer.parseInt(
+            int type = Integer.parseInt(
                 properties.getProperty((String)key)
             );
-            if(textureType == 1) {
-                gameObjects.add(
-                    new Wall(game, x * 64, y * 64, 64, 64)
-                );
-            }
+            gameObjects.add(GameObject.of(game, x, y, type));
         }
     }
 }

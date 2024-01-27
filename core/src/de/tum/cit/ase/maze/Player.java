@@ -24,7 +24,7 @@ public class Player extends GameObject {
 
     public Player(MazeRunnerGame game,
                   float x, float y) {
-        super(game, x, y, 64.0f / 1.7f, 55f);
+        super(game, x, y, 64.0f / 1.7f, 32f);
         this.animations = new ArrayList<>();
         this.loadAnimation();
     }
@@ -161,8 +161,8 @@ public class Player extends GameObject {
             animations.get(direction).getKeyFrame(animationTime, true),
             x,
             y,
-            width,
-            height
+            64,
+            128
         );
     }
 }

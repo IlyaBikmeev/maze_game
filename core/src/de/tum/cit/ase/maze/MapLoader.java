@@ -11,10 +11,10 @@ import java.util.Properties;
 public class MapLoader {
 
     private final MazeRunnerGame game;
-    private final int[][] map = new int[72][40];
+    private final int[][] map = new int[MAX_WIDTH][MAX_HEIGHT];
 
-    private static final int MAX_WIDTH = 72;
-    private static final int MAX_HEIGHT = 40;
+    private static final int MAX_WIDTH = 100;
+    private static final int MAX_HEIGHT = 100;
 
     public MapLoader(MazeRunnerGame game) {
         this.game = game;
@@ -45,14 +45,17 @@ public class MapLoader {
     private void processProperties(Properties properties,
                                    List<GameObject> gameObjects) {
         for(Object key : properties.keySet()) {
-            String[] coordinates = ((String) key).split(",");
-            int x = Integer.parseInt(coordinates[0]);
-            int y = Integer.parseInt(coordinates[1]);
-            int type = Integer.parseInt(
-                properties.getProperty((String)key)
-            );
-            map[x][y] = type;
-            gameObjects.add(GameObject.of(game, x, y, type));
+
+            try {
+                String[] coordinates = ((String) key).split(",");
+                int x = Integer.parseInt(coordinates[0]);
+                int y = Integer.parseInt(coordinates[1]);
+                int type = Integer.parseInt(
+                    properties.getProperty((String) key)
+                );
+                map[x][y] = type;
+                gameObjects.add(GameObject.of(game, x, y, type));
+            } catch (Exception ignored) {}
         }
 
         for(int x = 0; x < MAX_WIDTH; ++x) {

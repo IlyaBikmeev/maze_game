@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -121,14 +122,13 @@ public class GameScreen implements Screen {
             Gdx.files.internal("OpenSans.ttf")
         ).generateFont(new FreeTypeFontGenerator.FreeTypeFontParameter());
 
-        font.setColor(Color.CYAN);
-        CharSequence healthState = "Health: " + game.getPlayer().getHealth();
-        CharSequence keyStatus = "Key found: " + game.getPlayer().hasKey();
+        font.setColor(Color.BLACK);
+        font.getData().setScale(2);
 
-        font.draw(game.getSpriteBatch(), healthState, 0.85f * screenWidth + translatedX,
+        String info = String.format("Health: %d, Key found: %s", game.getPlayer().getHealth(), game.getPlayer().hasKey());
+
+        font.draw(game.getSpriteBatch(), info, 0.6f * screenWidth + translatedX,
             0.95f * screenHeight + translatedY);
-        font.draw(game.getSpriteBatch(), keyStatus, 0.85f * screenWidth + translatedX,
-            0.95f * screenHeight + translatedY - font.getLineHeight());
     }
 
 

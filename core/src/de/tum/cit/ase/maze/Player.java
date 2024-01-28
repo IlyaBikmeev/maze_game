@@ -24,7 +24,7 @@ public class Player extends GameObject {
 
     public Player(MazeRunnerGame game,
                   float x, float y) {
-        super(game, x, y, 64.0f / 1.7f, 32f);
+        super(game, x, y, 64.0f / 1.7f, 20f);
         this.animations = new ArrayList<>();
         this.loadAnimation();
     }

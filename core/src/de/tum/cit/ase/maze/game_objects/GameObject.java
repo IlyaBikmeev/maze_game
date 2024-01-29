@@ -1,9 +1,14 @@
-package de.tum.cit.ase.maze;
+package de.tum.cit.ase.maze.game_objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import de.tum.cit.ase.maze.MazeRunnerGame;
 
+/**
+ * Base class for all the game objects
+ */
 public abstract class GameObject {
+    //Game instance
     protected MazeRunnerGame game;
 
     protected float x;
@@ -14,6 +19,7 @@ public abstract class GameObject {
 
     protected boolean visible;
 
+    //Bounding box
     protected Rectangle bounds;
 
     public GameObject(MazeRunnerGame game,
@@ -55,12 +61,25 @@ public abstract class GameObject {
         this.y = y;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
     public void remove() {
         this.visible = false;
     }
 
     public abstract void render(SpriteBatch batch, float delta);
 
+    //Factory method for creating all types of objects
     public static GameObject of(MazeRunnerGame game, float x, float y, int type) {
         switch (type) {
             case -1: return new Path(game, x * 64, y * 64);
@@ -74,4 +93,6 @@ public abstract class GameObject {
 
         throw new IllegalArgumentException("No such entity!");
     }
+
+
 }

@@ -4,9 +4,15 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import de.tum.cit.ase.maze.game_objects.EntryPoint;
+import de.tum.cit.ase.maze.game_objects.GameObject;
+import de.tum.cit.ase.maze.game_objects.Player;
+import de.tum.cit.ase.maze.screen.GameOverScreen;
+import de.tum.cit.ase.maze.screen.GameScreen;
+import de.tum.cit.ase.maze.screen.MenuScreen;
+import de.tum.cit.ase.maze.screen.VictoryScreen;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 import java.util.LinkedList;
@@ -67,6 +73,11 @@ public class MazeRunnerGame extends Game {
         goToMenu(); // Navigate to the menu screen
     }
 
+
+    /**
+     * Called when the user has just chosen a map to load. Loads the map and all the objects.
+     * @param mapFile The file to load from.
+     */
     public void loadMap(FileHandle mapFile) {
         player = new Player(this, 0f, 0f);
         gameObjects = new LinkedList<>();
@@ -79,12 +90,6 @@ public class MazeRunnerGame extends Game {
 
         player.setPosition(entryPoint.getX(), entryPoint.getY());
         mapLoaded = true;
-    }
-
-    private void clear() {
-        gameObjects = null;
-        mapLoaded = false;
-        player = null;
     }
 
     /**
@@ -117,11 +122,17 @@ public class MazeRunnerGame extends Game {
         }
     }
 
+    /**
+     * Switches to the victory screen.
+     */
     public void showVictory() {
         gameMusic.stop();
         this.setScreen(new VictoryScreen(this));
     }
 
+    /**
+     * Switches to the game over screen.
+     */
     public void showGameOver() {
         gameMusic.stop();
         this.setScreen(new GameOverScreen(this));
@@ -150,6 +161,8 @@ public class MazeRunnerGame extends Game {
     public Player getPlayer() {
         return player;
     }
+
+
 
     public List<GameObject> getGameObjects() {
         return gameObjects;

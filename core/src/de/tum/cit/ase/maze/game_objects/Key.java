@@ -1,7 +1,10 @@
-package de.tum.cit.ase.maze;
+package de.tum.cit.ase.maze.game_objects;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import de.tum.cit.ase.maze.MazeRunnerGame;
 
+/**
+ * The class represents the key the player should pick up before he reaches the exit.
+ */
 public class Key extends StaticBlock {
 
     public Key(MazeRunnerGame game, float x, float y) {

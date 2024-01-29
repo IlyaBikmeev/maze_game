@@ -1,10 +1,14 @@
-package de.tum.cit.ase.maze;
+package de.tum.cit.ase.maze.game_objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import de.tum.cit.ase.maze.MazeRunnerGame;
 
+/**
+ * The class represents all the static obstacles.
+ */
 public abstract class StaticBlock extends GameObject {
     protected static Texture objectsSheet =
         new Texture(Gdx.files.internal("basictiles.png"));

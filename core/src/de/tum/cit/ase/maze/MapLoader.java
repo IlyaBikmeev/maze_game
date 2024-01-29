@@ -1,16 +1,21 @@
 package de.tum.cit.ase.maze;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import de.tum.cit.ase.maze.game_objects.GameObject;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * This class is used for loading map from files.
+ */
 public class MapLoader {
 
     private final MazeRunnerGame game;
+
+    //2d array for storing the map.
     private final int[][] map = new int[MAX_WIDTH][MAX_HEIGHT];
 
     private static final int MAX_WIDTH = 100;
@@ -20,6 +25,9 @@ public class MapLoader {
         this.game = game;
     }
 
+    /**
+     * Clears all the map. -1 represents empty cell.
+     */
     private void clear() {
         for (int i = 0; i < MAX_WIDTH; i++) {
             for(int j = 0; j < MAX_HEIGHT; ++j) {
@@ -28,6 +36,11 @@ public class MapLoader {
         }
     }
 
+    /**
+     * Loads the map from file.
+     * @param file - file to load from.
+     * @return List of loaded game objects.
+     */
     public List<GameObject> fromFile(FileHandle file) {
         clear();
         Properties properties = new Properties();
@@ -42,6 +55,11 @@ public class MapLoader {
         return res;
     }
 
+    /**
+     * Helper method for load the map
+     * @param properties - Proceeded properties
+     * @param gameObjects - List where to store all the objects.
+     */
     private void processProperties(Properties properties,
                                    List<GameObject> gameObjects) {
         for(Object key : properties.keySet()) {

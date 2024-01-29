@@ -1,4 +1,6 @@
-package de.tum.cit.ase.maze;
+package de.tum.cit.ase.maze.game_objects;
+
+import de.tum.cit.ase.maze.MazeRunnerGame;
 
 import java.util.Random;
 

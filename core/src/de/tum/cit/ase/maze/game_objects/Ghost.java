@@ -1,15 +1,19 @@
-package de.tum.cit.ase.maze;
+package de.tum.cit.ase.maze.game_objects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import de.tum.cit.ase.maze.MazeRunnerGame;
 
 import java.util.Random;
 
+/**
+ * The class represents simple bot called Ghost. It has a simple behavior: it just walks at random direction
+ * and whenever it collides with solid block. it changes the direction randomly.
+ */
 public class Ghost extends Player {
     public Ghost(MazeRunnerGame game, float x, float y) {
         super(game, x, y);

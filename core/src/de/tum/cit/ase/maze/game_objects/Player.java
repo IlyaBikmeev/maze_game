@@ -1,4 +1,4 @@
-package de.tum.cit.ase.maze;
+package de.tum.cit.ase.maze.game_objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -8,10 +8,14 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import de.tum.cit.ase.maze.MazeRunnerGame;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The class represents the Player.
+ */
 public class Player extends GameObject {
     protected List<Animation<TextureRegion>> animations;  //array for animations for each direction
     protected float speed = 200f;
@@ -100,6 +104,7 @@ public class Player extends GameObject {
             setPosition(x - deltaX, y - deltaY);
         }
 
+        //Collisions
         if(collidesWithTrap()) {
             boolean damaged = damageTime == 0 || damageTime > 1;
             damageTime += delta;
@@ -165,4 +170,6 @@ public class Player extends GameObject {
             128
         );
     }
+
+
 }

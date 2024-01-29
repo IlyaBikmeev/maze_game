@@ -1,4 +1,4 @@
-package de.tum.cit.ase.maze;
+package de.tum.cit.ase.maze.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,9 +7,10 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ScreenUtils;
+import de.tum.cit.ase.maze.MazeRunnerGame;
+import de.tum.cit.ase.maze.game_objects.Player;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -51,10 +52,14 @@ public class GameScreen implements Screen {
         postActions();
     }
 
+    /**
+     * Helper method for render all the objects
+     * @param delta - amount of time from the last frame
+     */
     private void renderObjects(float delta) {
         game.getGameObjects().
             stream()
-            .filter(obj -> obj.visible && !(obj instanceof Player))
+            .filter(obj -> obj.isVisible() && !(obj instanceof Player))
             .forEach(obj -> obj.render(game.getSpriteBatch(), delta));
         game.getPlayer().render(game.getSpriteBatch(), delta);
         game.getGameObjects().stream()
@@ -62,6 +67,9 @@ public class GameScreen implements Screen {
             .forEach(obj -> obj.render(game.getSpriteBatch(), delta));
     }
 
+    /**
+     * Is called before the rendering
+     */
     private void beforeActions() {
         checkEnd();
         handleInput();
@@ -76,6 +84,9 @@ public class GameScreen implements Screen {
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
     }
 
+    /**
+     * Checking whether the player looses or wins the game
+     */
     private void checkEnd() {
         if(game.getPlayer().isDeath()) {
             game.showGameOver();
@@ -84,34 +95,43 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Handle user input
+     */
     private void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.goToMenu();
         }
     }
 
+    /**
+     * Is called for translate camera when the user gets closer to the borders of the viewport
+     */
     private void translateCamera() {
-        if(game.getPlayer().x - translatedX < screenWidth * 0.1f) {
+        if(game.getPlayer().getX() - translatedX < screenWidth * 0.1f) {
             translatedX -= screenWidth / 2;
             camera.translate(-screenWidth / 2, 0);
         }
 
-        if(game.getPlayer().x - translatedX > 0.9 * (screenWidth - game.getPlayer().width)) {
+        if(game.getPlayer().getX() - translatedX > 0.9 * (screenWidth - game.getPlayer().getWidth())) {
             translatedX += screenWidth / 2;
             camera.translate(screenWidth / 2, 0);
         }
 
-        if(game.getPlayer().y - translatedY < screenHeight * 0.1f) {
+        if(game.getPlayer().getY() - translatedY < screenHeight * 0.1f) {
             translatedY -= screenHeight / 2;
             camera.translate(0, -screenHeight / 2);
         }
 
-        if(game.getPlayer().y - translatedY + game.getPlayer().height > 0.9 * screenHeight) {
+        if(game.getPlayer().getY() - translatedY + game.getPlayer().getHeight() > 0.9 * screenHeight) {
             translatedY += screenHeight / 2;
             camera.translate(0, screenHeight / 2);
         }
     }
 
+    /**
+     * Is called after rendering all the objects
+     */
     private void postActions() {
         drawHud();
         game.getSpriteBatch().end(); // Important to call this after drawing everything

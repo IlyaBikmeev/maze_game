@@ -1,4 +1,4 @@
-package de.tum.cit.ase.maze;
+package de.tum.cit.ase.maze.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -10,12 +10,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.ase.maze.MazeRunnerGame;
 
-public class GameOverScreen implements Screen {
+/**
+ * The VictoryScreen class is responsible for showing the screen with "Game Over" whenever the player wins
+ */
+public class VictoryScreen implements Screen {
     private final Stage stage;
     private final MazeRunnerGame game;
 
-    public GameOverScreen(MazeRunnerGame game) {
+    public VictoryScreen(MazeRunnerGame game) {
         this.game = game;
         var camera = new OrthographicCamera();
         camera.zoom = 1.5f; // Set camera zoom for a closer view
@@ -28,7 +32,7 @@ public class GameOverScreen implements Screen {
         stage.addActor(table); // Add the table to the stage
 
         // Add a label as a title
-        table.add(new Label("Game over!", game.getSkin(), "title")).padBottom(80).row();
+        table.add(new Label("You won!", game.getSkin(), "title")).padBottom(80).row();
     }
 
     @Override
